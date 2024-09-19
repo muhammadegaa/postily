@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Postily</string>
+    <string name="title_feed">Feed</string>
+    <string name="title_albums">Albums</string>
+    <string name="title_tasks">Tasks</string>
+    <string name="title_profile">Me</string>
+    <string name="card_header">Header for card view</string>
+    <string name="album_image">Image</string>
+</resources>
