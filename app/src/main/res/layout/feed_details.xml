@@ -6,6 +6,32 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <LinearLayout
+        android:id="@+id/layoutTopNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/btnBSBackFeed"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:rotation="180"
+            android:src="@drawable/baseline_chevron_right_24"/>
+
+        <TextView
+            android:id="@+id/tvBSFeedTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:paddingLeft="10dp"
+            android:layout_gravity="center"
+            android:text="Feed"/>
+
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/feed_detail_title"
         android:layout_width="match_parent"

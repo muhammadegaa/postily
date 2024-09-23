@@ -7,23 +7,23 @@
 
     <fragment
         android:id="@+id/navigation_feed"
-        android:name="com.example.postily.ui.feed.FeedFragment"
+        android:name="com.example.postily.view.feed.FeedFragment"
         android:label="@string/title_feed"
         tools:layout="@layout/fragment_feed" />
 
     <fragment
         android:id="@+id/navigation_albums"
-        android:name="com.example.postily.ui.albums.AlbumsFragment"
+        android:name="com.example.postily.view.albums.AlbumsFragment"
         android:label="@string/title_albums"
         tools:layout="@layout/fragment_albums" />
 
     <fragment
         android:id="@+id/navigation_tasks"
-        android:name="com.example.postily.ui.tasks.TasksFragment"
+        android:name="com.example.postily.view.tasks.TasksFragment"
         android:label="@string/title_tasks"
         tools:layout="@layout/fragment_tasks" />
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.postily.ui.tasks.ProfileFragment"
+        android:name="com.example.postily.view.tasks.ProfileFragment"
         android:label="@string/title_profile" />
 </navigation>

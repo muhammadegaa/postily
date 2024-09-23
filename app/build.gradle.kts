@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.material.v190)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
     implementation(libs.androidx.constraintlayout)
