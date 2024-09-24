@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.postily.R
 import com.example.postily.databinding.FeedDetailsBinding
-import com.example.postily.model.feed.Feed
+import com.example.postily.model.feed.FeedEntity
 import com.example.postily.network.CommentApiService
 import com.example.postily.view.feed.comment.CommentsAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class FeedBottomSheetDialogFragment(private val feed: Feed) : BottomSheetDialogFragment() {
+class FeedBottomSheetDialogFragment(private val feed: FeedEntity) : BottomSheetDialogFragment() {
 
     private var _binding: FeedDetailsBinding? =null
     private val binding get() = _binding!!

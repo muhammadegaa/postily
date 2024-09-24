@@ -1,7 +1,8 @@
 package com.example.postily.view.feed
 
-import com.example.postily.model.feed.Feed
+import com.example.postily.model.feed.FeedEntity
+
 
 interface FeedClickListener {
-        fun onFeedClick(feed: Feed)
+        fun onFeedClick(feed: FeedEntity)
 }

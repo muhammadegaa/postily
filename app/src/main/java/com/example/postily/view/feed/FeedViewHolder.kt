@@ -1,16 +1,15 @@
 package com.example.postily.view.feed
 
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.postily.databinding.CardFeedBinding
-import com.example.postily.model.feed.Feed
+import com.example.postily.model.feed.FeedEntity
 
 class FeedViewHolder(
     private val cardFeedBinding: CardFeedBinding,
     private val clickListener: FeedClickListener
 ) : RecyclerView.ViewHolder(cardFeedBinding.root)
 {
-    fun bindFeed(feed: Feed)
+    fun bindFeed(feed: FeedEntity)
     {
         cardFeedBinding.cover.setImageResource(feed.cover)
         cardFeedBinding.title.text = feed.title
