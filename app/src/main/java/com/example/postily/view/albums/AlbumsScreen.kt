@@ -29,4 +29,8 @@ fun AlbumsScreen(navController: NavController, viewModel: AlbumViewModel = viewM
 }
 
 @Composable
-fun AlbumItem(album: Album, onClick: () 
+fun AlbumItem(album: Album, onClick: () -> Unit) {
+    Card(modifier = Modifier.padding(8.dp).clickable(onClick = onClick)) {
+        Text(text = album.title)
+    }
+}

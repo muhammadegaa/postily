@@ -33,4 +33,7 @@ fun AlbumDetailScreen(navController: NavController, albumId: String?, viewModel:
 
 @Composable
 fun PhotoItem(photo: Photo, onClick: () -> Unit) {
-    Card(modifier = Modifi
+    Card(modifier = Modifier.padding(8.dp).clickable(onClick = onClick)) {
+        Text(text = photo.title)
+    }
+}

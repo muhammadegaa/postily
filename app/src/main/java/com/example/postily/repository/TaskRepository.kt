@@ -9,4 +9,6 @@ class TaskRepository {
 
     // Fetch all tasks from the API
     suspend fun getTasks(): List<Task> {
-      
+        return apiService.getTasks()
+    }
+}

@@ -29,4 +29,10 @@ fun PostilyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
         LightColorScheme
     }
 
- 
+    MaterialTheme(
+        colorScheme = colors,
+        typography = Typography,
+        shapes = Shapes,
+        content = content
+    )
+}
