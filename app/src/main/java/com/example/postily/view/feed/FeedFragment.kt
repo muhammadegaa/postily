@@ -15,6 +15,8 @@ import com.example.postily.databinding.FragmentFeedBinding
 import com.example.postily.model.feed.FeedEntity
 import com.example.postily.network.PostApiService
 import com.example.postily.viewmodel.FeedViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -71,6 +73,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 //    }
 //}
 
+@AndroidEntryPoint
 class FeedFragment : Fragment(R.layout.fragment_feed) {
     private val viewModel: FeedViewModel by viewModels()
 

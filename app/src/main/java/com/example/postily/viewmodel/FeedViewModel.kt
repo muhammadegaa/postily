@@ -8,9 +8,11 @@ import com.example.postily.model.feed.Comment
 import com.example.postily.model.feed.CommentResponse
 import com.example.postily.model.feed.PostResponse
 import com.example.postily.repository.FeedRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class FeedViewModel @Inject constructor(
     private val repository: FeedRepository
 ): ViewModel() {

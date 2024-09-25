@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
 }
 
@@ -39,6 +41,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -58,6 +64,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx.v275)
     implementation(libs.androidx.navigation.ui.ktx.v275)
     implementation(libs.glide)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
     annotationProcessor(libs.compiler)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.livedata.ktx)

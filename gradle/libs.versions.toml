@@ -9,6 +9,7 @@ firebaseFirestore = "25.1.0"
 glide = "4.13.0"
 googleServices = "4.4.2"
 googleServicesVersion = "4.3.15"
+hiltAndroid = "2.51.1"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -46,6 +47,8 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore", versio
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 google-services-v4315 = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
