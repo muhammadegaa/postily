@@ -32,4 +32,14 @@ class UserViewModel : ViewModel() {
 
     // Fetch user's friends
     private fun fetchFriends() {
-        v
+        viewModelScope.launch {
+            val fetchedFriends = repository.getFriends()
+            friends.addAll(fetchedFriends)
+        }
+    }
+
+    // Get a specific friend by ID (for detailed screens)
+    fun getFriendById(friendId: Int): User? {
+        return friends.find { it.id == friendId }
+    }
+}
