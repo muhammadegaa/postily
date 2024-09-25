@@ -1,22 +1,18 @@
 package com.example.postily.repository
 
-import android.util.Log
-import com.example.postily.model.feed.CommentResponse
-import com.example.postily.model.feed.FeedEntity
-import com.example.postily.model.feed.PostResponse
+import com.example.postily.model.feed.Comment
+import com.example.postily.model.feed.Post
 import com.example.postily.network.FeedApiService
-import com.example.postily.network.PostApiService
-import javax.inject.Inject
+import com.example.postily.network.RetrofitInstance
 
-class FeedRepository @Inject constructor(
-    private val apiService: PostApiService,
-) {
+class FeedRepository {
+    private val apiService: FeedApiService = RetrofitInstance.createService(FeedApiService::class.java)
 
-    suspend fun getPosts(): List<PostResponse> {
+    suspend fun getPosts(): List<Post> {
         return apiService.getPosts()
     }
 
-    suspend fun getComments(postId: Int): List<CommentResponse>{
+    suspend fun getComments(postId: Int): List<Comment> {
         return apiService.getComments(postId)
     }
 }
