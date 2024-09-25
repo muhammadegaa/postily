@@ -19,3 +19,9 @@ fun FriendDetailScreen(navController: NavController, friendId: String?, viewMode
             Text(text = "Friend's Name: ${friend.name}")
             Text(text = "Phone: ${friend.phone}")
             Text(text = "Email: ${friend.email}")
+            Text(text = "Company: ${friend.company.name}")
+        } else {
+            Text(text = "Friend not found.")
+        }
+    }
+}

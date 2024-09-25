@@ -25,4 +25,20 @@ fun ProfileScreen(navController: NavController, viewModel: UserViewModel = viewM
             Text(text = "Email: ${user.email}")
             Text(text = "Phone: ${user.phone}")
             Text(text = "Company: ${user.company.name}")
-            Text(text = "Website: ${user.website
+            Text(text = "Website: ${user.website}")
+        } else {
+            Text(text = "Loading profile...")
+        }
+
+        // Friends List
+        Text(text = "Friends", modifier = Modifier.padding(top = 16.dp))
+        LazyColumn {
+            items(friends) { friend ->
+                FriendItem(friend) {
+                    // Navigate to FriendDetailScreen when a friend is clicked
+                    navController.navigate("friendDetail/${friend.id}")
+                }
+            }
+        }
+    }
+}
