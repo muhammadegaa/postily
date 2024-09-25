@@ -5,9 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
@@ -42,7 +42,9 @@ fun MainScreen() {
             BottomNavigationBar(navController = navController)
         }
     ) { innerPadding ->
-        // Pass the innerPadding to the NavigationGraph to ensure proper padding
-        NavigationGraph(navController = navController, paddingValues = innerPadding)
+        NavigationGraph(
+            navController = navController,
+            paddingValues = innerPadding // Pass padding values
+        )
     }
 }

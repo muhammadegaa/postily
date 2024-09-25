@@ -51,7 +51,7 @@ fun NavigationGraph(
         composable("tasks") { TaskScreen(navController) }
 
         // Profile (Me) Screen
-        composable("me") { ProfileScreen(navController) }
+        composable("profile") { ProfileScreen(navController) }
 
         // Friend Details
         composable("friendDetail/{friendId}") { backStackEntry ->

@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import com.example.postily.viewmodel.FeedViewModel
 import androidx.navigation.NavController
 import com.example.postily.model.feed.Comment
 
@@ -43,4 +44,7 @@ fun FeedDetailScreen(
 @Composable
 fun CommentItem(comment: Comment) {
     Column(modifier = Modifier.padding(8.dp)) {
-        Text(text = commen
+        Text(text = comment.name, style = MaterialTheme.typography.titleMedium)
+        Text(text = comment.body, style = MaterialTheme.typography.bodyMedium)
+    }
+}

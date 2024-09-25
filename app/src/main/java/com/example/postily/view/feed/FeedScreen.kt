@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.postily.model.feed.Post
+import com.example.postily.viewmodel.FeedViewModel
 
 @Composable
 fun FeedScreen(navController: NavHostController, viewModel: FeedViewModel = viewModel()) {
@@ -20,4 +21,17 @@ fun FeedScreen(navController: NavHostController, viewModel: FeedViewModel = view
     LazyColumn {
         items(posts) { post ->
             PostItem(post) {
-                // Navigate to Feed Detail Screen
+                // Navigate to Feed Detail Screen when a post is clicked
+                navController.navigate("feedDetail/${post.id}")
+            }
+        }
+    }
+}
+
+@Composable
+fun PostItem(post: Post, onClick: () -> Unit) {
+    Card(modifier = Modifier.padding(8.dp).clickable { onClick() }) {
+        Text(text = post.title)
+        Text(text = post.body)
+    }
+}
