@@ -20,14 +20,15 @@ fun FeedDetailScreen(
     viewModel: FeedViewModel = viewModel()  // ViewModel for managing posts and comments
 ) {
     val post = viewModel.getPostById(postId?.toInt() ?: 0)
-    val comments by remember { mutableStateOf(viewModel.comments) }
-    var isLoading by remember { mutableStateOf(comments.isEmpty()) }
+    val comments = viewModel.comments.collectAsState()
+    var isLoading = viewModel.isLoading.collectAsState()
 
     // Fetch comments for the selected post
     if (post != null) {
         LaunchedEffect(post.id) {
             viewModel.fetchComments(post.id)
-            isLoading = false
+            !isLoading.value
+
         }
     }
 
@@ -38,13 +39,13 @@ fun FeedDetailScreen(
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Comments:", modifier = Modifier.padding(top = 16.dp))
 
-        if (isLoading) {
+        if (isLoading.value) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
                 CircularProgressIndicator()
             }
         } else {
             LazyColumn {
-                items(comments) { comment ->
+                items(comments.value) { comment ->
                     CommentItem(comment)
                 }
             }

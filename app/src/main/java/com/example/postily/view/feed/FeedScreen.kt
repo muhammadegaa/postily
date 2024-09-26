@@ -14,9 +14,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,17 +25,19 @@ import com.example.postily.viewmodel.FeedViewModel
 
 @Composable
 fun FeedScreen(navController: NavController, viewModel: FeedViewModel = viewModel()) {
-    val posts by remember { mutableStateOf(viewModel.posts) }
-    val isLoading by remember { mutableStateOf(posts.isEmpty()) }
+    val posts = viewModel.posts.collectAsState()
+    val isLoading = viewModel.isLoading.collectAsState()
 
     // UI for loading state
-    if (isLoading) {
+    if (isLoading.value) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
             CircularProgressIndicator()
         }
     } else {
-        LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-            items(posts) { item ->
+        LazyColumn(modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)) {
+            items(posts.value) { item ->
                 FeedListItem(item) {
                     navController.navigate("feedDetail/${item.id}")
                 }

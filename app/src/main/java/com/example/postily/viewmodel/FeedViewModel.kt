@@ -1,5 +1,6 @@
 package com.example.postily.viewmodel
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,23 +8,25 @@ import com.example.postily.model.feed.Comment
 import com.example.postily.model.feed.Post
 import com.example.postily.repository.FeedRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-<<<<<<< HEAD
-class FeedViewModel : ViewModel() {
-    private val repository = FeedRepository()
-=======
 @HiltViewModel
+
 class FeedViewModel @Inject constructor(
     private val repository: FeedRepository
-): ViewModel() {
->>>>>>> 42dbe2a6bc5a78b4ab0b1ed737ed48a49c6ad859
+) : ViewModel() {
 
-    var posts = mutableStateListOf<Post>()
-        private set
+    private val _posts = MutableStateFlow<List<Post>>(emptyList())
+    val posts: StateFlow<List<Post>> = _posts
 
-    var comments = mutableStateListOf<Comment>()
-        private set
+    private val _comments = MutableStateFlow<List<Comment>>(emptyList())
+    val comments: StateFlow<List<Comment>> = _comments
+
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
     init {
         fetchPosts()
@@ -31,20 +34,30 @@ class FeedViewModel @Inject constructor(
 
     private fun fetchPosts() {
         viewModelScope.launch {
-            val fetchedPosts = repository.getPosts()
-            posts.addAll(fetchedPosts)
+            _isLoading.value = true
+            try {
+                val fetchedPosts = repository.getPosts()
+                _posts.value = fetchedPosts
+            } catch (e:Exception) {
+                _posts.value = emptyList()
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
 
     fun fetchComments(postId: Int) {
         viewModelScope.launch {
-            val fetchedComments = repository.getComments(postId)
-            comments.clear()
-            comments.addAll(fetchedComments)
+            try {
+                val fetchedComments = repository.getComments(postId)
+                _comments.value = fetchedComments
+            } catch (e: Exception) {
+                _comments.value = emptyList()
+            }
         }
     }
 
     fun getPostById(postId: Int): Post? {
-        return posts.find { it.id == postId }
+        return _posts.value.find { it.id == postId }
     }
 }
