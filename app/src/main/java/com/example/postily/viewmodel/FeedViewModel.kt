@@ -6,10 +6,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.postily.model.feed.Comment
 import com.example.postily.model.feed.Post
 import com.example.postily.repository.FeedRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
+<<<<<<< HEAD
 class FeedViewModel : ViewModel() {
     private val repository = FeedRepository()
+=======
+@HiltViewModel
+class FeedViewModel @Inject constructor(
+    private val repository: FeedRepository
+): ViewModel() {
+>>>>>>> 42dbe2a6bc5a78b4ab0b1ed737ed48a49c6ad859
 
     var posts = mutableStateListOf<Post>()
         private set

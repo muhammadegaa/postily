@@ -1,8 +1,14 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+<<<<<<< HEAD
     id("com.google.gms.google-services")  // For Firebase services
     id("org.jetbrains.kotlin.kapt")
+=======
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+>>>>>>> 42dbe2a6bc5a78b4ab0b1ed737ed48a49c6ad859
 }
 
 android {
@@ -48,6 +54,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     implementation(libs.androidx.navigation.compose)
     val composeBom = platform("androidx.compose:compose-bom:2024.09.02")
@@ -78,6 +88,7 @@ dependencies {
 
     // Coroutines for async tasks
     implementation(libs.kotlinx.coroutines.android)
+<<<<<<< HEAD
 
     // Jetpack Compose
     implementation(composeBom)
@@ -112,6 +123,20 @@ dependencies {
     implementation(libs.androidx.runtime.rxjava2)
 
     // Navigation components
+=======
+    implementation(libs.material.v190)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.androidx.navigation.fragment.ktx.v275)
+    implementation(libs.androidx.navigation.ui.ktx.v275)
+    implementation(libs.glide)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    annotationProcessor(libs.compiler)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+>>>>>>> 42dbe2a6bc5a78b4ab0b1ed737ed48a49c6ad859
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
