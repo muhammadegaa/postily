@@ -1,45 +1,63 @@
 package com.example.postily.viewmodel
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postily.model.albums.Album
 import com.example.postily.model.albums.Photo
-import com.example.postily.repository.AlbumRepository
+import com.example.postily.network.AlbumApiService
+import com.example.postily.network.RetrofitInstance
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class AlbumViewModel : ViewModel() {
-    private val repository = AlbumRepository()
 
-    var albums = mutableStateListOf<Album>()
-        private set
+    // Use Retrofit to get the AlbumApiService
+    private val albumApiService: AlbumApiService = RetrofitInstance.createService(AlbumApiService::class.java)
 
-    var photos = mutableStateListOf<Photo>()
-        private set
+    // StateFlows to manage the state of albums and photos
+    private val _albums = MutableStateFlow<List<Album>>(emptyList())
+    val albums: StateFlow<List<Album>> = _albums
 
+    private val _photos = MutableStateFlow<List<Photo>>(emptyList())
+    val photos: StateFlow<List<Photo>> = _photos
+
+    // Fetch albums when the ViewModel is initialized
     init {
         fetchAlbums()
     }
 
-    // Fetch the list of albums from the repository
-    private fun fetchAlbums() {
+    // Function to fetch albums from the API
+    fun fetchAlbums() {
         viewModelScope.launch {
-            val fetchedAlbums = repository.getAlbums()
-            albums.addAll(fetchedAlbums)
+            try {
+                val albumList = albumApiService.getAlbums()
+                _albums.value = albumList
+            } catch (e: Exception) {
+                // Handle any errors here (e.g., log the error)
+            }
         }
     }
 
-    // Fetch the photos of a specific album
+    // Function to fetch photos of a specific album from the API
     fun fetchPhotos(albumId: Int) {
         viewModelScope.launch {
-            val fetchedPhotos = repository.getPhotos(albumId)
-            photos.clear()
-            photos.addAll(fetchedPhotos)
+            try {
+                val photoList = albumApiService.getPhotos(albumId)
+                _photos.value = photoList
+            } catch (e: Exception) {
+                // Handle any errors here (e.g., log the error)
+            }
         }
     }
 
-    // Get a specific photo by ID
+    // Function to retrieve a specific album by ID
+    fun getAlbumById(albumId: Int): Album? {
+        return _albums.value.find { it.id == albumId }
+    }
+
+    // Function to retrieve a specific photo by ID
     fun getPhotoById(photoId: Int): Photo? {
-        return photos.find { it.id == photoId }
+        return _photos.value.find { it.id == photoId }
     }
 }
