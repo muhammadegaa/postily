@@ -19,17 +19,14 @@ import com.example.postily.view.tasks.TaskScreen
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
-    paddingValues: PaddingValues // Accept padding values from the Scaffold
+    paddingValues: PaddingValues
 ) {
     NavHost(
         navController = navController,
         startDestination = "feed",
-        modifier = Modifier.padding(paddingValues) // Apply padding to the navigation content
+        modifier = Modifier.padding(paddingValues)
     ) {
-        // Feed Screen
         composable("feed") { FeedScreen(navController) }
-
-        // Detailed Feed Screen for individual posts
         composable("feedDetail/{postId}") { backStackEntry ->
             FeedDetailScreen(navController, backStackEntry.arguments?.getString("postId"))
         }
