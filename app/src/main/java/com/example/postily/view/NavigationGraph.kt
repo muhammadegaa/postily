@@ -23,36 +23,51 @@ fun NavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "feed",
+        startDestination = "feed",  // Initial screen the app opens to
         modifier = Modifier.padding(paddingValues)
     ) {
-        composable("feed") { FeedScreen(navController) }
+        // Feed screen, which lists posts
+        composable("feed") {
+            FeedScreen(navController)
+        }
+
+        // FeedDetail screen shows details of a selected post
         composable("feedDetail/{postId}") { backStackEntry ->
-            FeedDetailScreen(navController, backStackEntry.arguments?.getString("postId"))
+            val postId = backStackEntry.arguments?.getString("postId")
+            FeedDetailScreen(navController, postId)
         }
 
-        // Albums Screen
-        composable("albums") { AlbumsScreen(navController) }
+        // Albums screen, which lists all albums
+        composable("albums") {
+            AlbumsScreen(navController)
+        }
 
-        // Detailed Album Screen for individual albums
+        // AlbumDetail screen shows photos of the selected album
         composable("albumDetail/{albumId}") { backStackEntry ->
-            AlbumDetailScreen(navController, backStackEntry.arguments?.getString("albumId"))
+            val albumId = backStackEntry.arguments?.getString("albumId")
+            AlbumDetailScreen(navController, albumId)
         }
 
-        // Photo detail screen
+        // PhotoDetail screen shows a detailed view of a selected photo
         composable("photoDetail/{photoId}") { backStackEntry ->
-            PhotoDetailScreen(navController, backStackEntry.arguments?.getString("photoId"))
+            val photoId = backStackEntry.arguments?.getString("photoId")
+            PhotoDetailScreen(navController, photoId)
         }
 
-        // Tasks Screen
-        composable("tasks") { TaskScreen(navController) }
+        // Tasks screen, which lists ongoing and completed tasks
+        composable("tasks") {
+            TaskScreen(navController)
+        }
 
-        // Profile (Me) Screen
-        composable("profile") { ProfileScreen(navController) }
+        // Profile screen shows the user's details (Me tab)
+        composable("profile") {
+            ProfileScreen(navController)
+        }
 
-        // Friend Details
+        // FriendDetail screen shows details of the selected friend from the profile
         composable("friendDetail/{friendId}") { backStackEntry ->
-            FriendDetailScreen(navController, backStackEntry.arguments?.getString("friendId"))
+            val friendId = backStackEntry.arguments?.getString("friendId")
+            FriendDetailScreen(navController, friendId)
         }
     }
 }

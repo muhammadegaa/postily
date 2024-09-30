@@ -80,7 +80,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android.v164)
 
     // Hilt for Dependency Injection
-
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Coroutines for async tasks
     implementation(libs.kotlinx.coroutines.android)
@@ -124,8 +126,6 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx.v275)
     implementation(libs.androidx.navigation.ui.ktx.v275)
     implementation(libs.glide)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
     annotationProcessor(libs.compiler)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.livedata.ktx)

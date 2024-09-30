@@ -5,23 +5,34 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postily.model.tasks.Task
 import com.example.postily.repository.TaskRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TaskViewModel : ViewModel() {
-    private val repository = TaskRepository()
+@HiltViewModel
+class TaskViewModel @Inject constructor(
+    private val repository: TaskRepository
+) : ViewModel() {
 
-    var tasks = mutableStateListOf<Task>()
-        private set
+    private val _tasks = MutableStateFlow<List<Task>>(emptyList())
+    val tasks: StateFlow<List<Task>> = _tasks
 
     init {
         fetchTasks()
     }
 
-    // Fetch tasks from the repository
     private fun fetchTasks() {
         viewModelScope.launch {
-            val fetchedTasks = repository.getTasks()
-            tasks.addAll(fetchedTasks)
+            try {
+                val fetchedTasks = repository.getTasks()
+                _tasks.value = fetchedTasks
+            } catch (e: Exception) {
+                // Handle any errors (e.g., show a message)
+                _tasks.value = emptyList()
+            }
         }
     }
 }
+

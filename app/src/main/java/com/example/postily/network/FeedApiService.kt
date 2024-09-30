@@ -2,6 +2,9 @@ package com.example.postily.network
 
 import com.example.postily.model.feed.Comment
 import com.example.postily.model.feed.Post
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.http.GET
 import retrofit2.http.Query
 

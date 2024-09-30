@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.postily.model.feed.Comment
@@ -17,35 +18,42 @@ import com.example.postily.viewmodel.FeedViewModel
 fun FeedDetailScreen(
     navController: NavController,
     postId: String?,
-    viewModel: FeedViewModel = viewModel()  // ViewModel for managing posts and comments
+    viewModel: FeedViewModel = hiltViewModel()
 ) {
     val post = viewModel.getPostById(postId?.toInt() ?: 0)
-    val comments = viewModel.comments.collectAsState()
-    var isLoading = viewModel.isLoading.collectAsState()
+    val comments by viewModel.comments.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
 
     // Fetch comments for the selected post
     if (post != null) {
         LaunchedEffect(post.id) {
             viewModel.fetchComments(post.id)
-            !isLoading.value
-
         }
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Text(text = post?.title ?: "No Title", style = androidx.compose.material3.MaterialTheme.typography.headlineSmall)
-        Text(text = post?.body ?: "No Content", style = androidx.compose.material3.MaterialTheme.typography.bodyMedium)
+        Text(
+            text = post?.title ?: "No Title",
+            style = androidx.compose.material3.MaterialTheme.typography.headlineSmall
+        )
+        Text(
+            text = post?.body ?: "No Content",
+            style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Comments:", modifier = Modifier.padding(top = 16.dp))
+        Text(text = "Comments:")
 
-        if (isLoading.value) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = androidx.compose.ui.Alignment.Center
+            ) {
                 CircularProgressIndicator()
             }
         } else {
             LazyColumn {
-                items(comments.value) { comment ->
+                items(comments) { comment ->
                     CommentItem(comment)
                 }
             }

@@ -15,29 +15,37 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.postily.model.feed.Post
 import com.example.postily.viewmodel.FeedViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 @Composable
-fun FeedScreen(navController: NavController, viewModel: FeedViewModel = viewModel()) {
-    val posts = viewModel.posts.collectAsState()
-    val isLoading = viewModel.isLoading.collectAsState()
+fun FeedScreen(navController: NavController, viewModel: FeedViewModel = hiltViewModel()) {
+    val posts by viewModel.posts.collectAsState() // Collect posts as state
+    val isLoading by viewModel.isLoading.collectAsState() // Collect loading state
 
     // UI for loading state
-    if (isLoading.value) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+    if (isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = androidx.compose.ui.Alignment.Center
+        ) {
             CircularProgressIndicator()
         }
     } else {
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)) {
-            items(posts.value) { item ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            items(posts) { item ->
                 FeedListItem(item) {
                     navController.navigate("feedDetail/${item.id}")
                 }
@@ -45,6 +53,7 @@ fun FeedScreen(navController: NavController, viewModel: FeedViewModel = viewMode
         }
     }
 }
+
 
 @Composable
 fun FeedListItem(item: Post, onClick: () -> Unit) {
