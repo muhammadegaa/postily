@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -59,7 +60,7 @@ fun AlbumListItem(album: Album, onClick: () -> Unit) {
                     .fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = album.title, style = MaterialTheme.typography.bodyMedium)
+            Text(text = album.title, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
         }
     }
 }
