@@ -10,7 +10,6 @@ import androidx.navigation.compose.composable
 import com.example.postily.view.feed.FeedScreen
 import com.example.postily.view.albums.AlbumsScreen
 import com.example.postily.view.albums.AlbumDetailScreen
-import com.example.postily.view.feed.FeedDetailScreen
 import com.example.postily.view.profile.ProfileScreen
 import com.example.postily.view.profile.friend.FriendDetailScreen
 import com.example.postily.view.albums.photo.PhotoDetailScreen
@@ -32,10 +31,10 @@ fun NavigationGraph(
         }
 
         // FeedDetail screen shows details of a selected post
-        composable("feedDetail/{postId}") { backStackEntry ->
-            val postId = backStackEntry.arguments?.getString("postId")
-            FeedDetailScreen(navController, postId)
-        }
+//        composable("feedDetail/{postId}") { backStackEntry ->
+//            val postId = backStackEntry.arguments?.getString("postId")
+//            FeedDetailScreen(navController, postId = postId)
+//        }
 
         // Albums screen, which lists all albums
         composable("albums") {
@@ -45,13 +44,13 @@ fun NavigationGraph(
         // AlbumDetail screen shows photos of the selected album
         composable("albumDetail/{albumId}") { backStackEntry ->
             val albumId = backStackEntry.arguments?.getString("albumId")
-            AlbumDetailScreen(navController, albumId)
+            AlbumDetailScreen(navController = navController, albumId = albumId)
         }
 
         // PhotoDetail screen shows a detailed view of a selected photo
         composable("photoDetail/{photoId}") { backStackEntry ->
             val photoId = backStackEntry.arguments?.getString("photoId")
-            PhotoDetailScreen(navController, photoId)
+            PhotoDetailScreen(navController = navController, photoId = photoId)
         }
 
         // Tasks screen, which lists ongoing and completed tasks
@@ -67,7 +66,8 @@ fun NavigationGraph(
         // FriendDetail screen shows details of the selected friend from the profile
         composable("friendDetail/{friendId}") { backStackEntry ->
             val friendId = backStackEntry.arguments?.getString("friendId")
-            FriendDetailScreen(navController, friendId)
+            FriendDetailScreen(navController = navController, friendId = friendId)
         }
     }
 }
+

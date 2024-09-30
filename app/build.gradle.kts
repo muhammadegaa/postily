@@ -94,8 +94,12 @@ dependencies {
     implementation(libs.androidx.material3)
 
     // Android Studio Preview support
-    implementation(libs.androidx.ui.tooling.preview)
-    debugImplementation(libs.androidx.ui.tooling)
+//    implementation(libs.androidx.ui.tooling.preview)
+//    debugImplementation(libs.androidx.ui.tooling)
+
+    // Compose Preview
+    debugImplementation(libs.ui.tooling)
+    implementation(libs.ui.tooling)
 
     // UI Tests
     androidTestImplementation(libs.androidx.ui.test.junit4)
