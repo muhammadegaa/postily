@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -53,14 +54,20 @@ fun AlbumListItem(album: Album, onClick: () -> Unit) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             AsyncImage(
-                model = "https://picsum.photos/200",  // Placeholder image as mentioned
+                model = "https://picsum.photos/200",
                 contentDescription = null,
                 modifier = Modifier
                     .height(120.dp)
                     .fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = album.title, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+            Text(
+                text = album.title,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
         }
     }
 }

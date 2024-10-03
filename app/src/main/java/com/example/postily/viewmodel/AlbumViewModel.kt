@@ -1,5 +1,6 @@
 package com.example.postily.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postily.model.albums.Album
@@ -33,7 +34,7 @@ class AlbumViewModel @Inject constructor(
                 val albumList = repository.getAlbums()
                 _albums.value = albumList
             } catch (e: Exception) {
-                // Handle any errors here (e.g., log the error)
+                e.message?.let { Log.e("AlbumViewModel", it) }
             }
         }
     }

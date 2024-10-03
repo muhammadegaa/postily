@@ -1,5 +1,6 @@
 package com.example.postily.view
 
+import android.content.Intent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,27 +15,31 @@ import com.example.postily.view.profile.ProfileScreen
 import com.example.postily.view.profile.friend.FriendDetailScreen
 import com.example.postily.view.albums.photo.PhotoDetailScreen
 import com.example.postily.view.tasks.TaskScreen
+import com.google.android.gms.auth.api.Auth
 
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    onGoogleSignIn: (Intent) -> Unit
 ) {
     NavHost(
         navController = navController,
-        startDestination = "feed",  // Initial screen the app opens to
+        startDestination = "feed",
         modifier = Modifier.padding(paddingValues)
     ) {
+
+        composable("splash") {
+            SplashScreen(navController)
+        }
+        composable("auth") {
+            AuthScreen(onGoogleSignIn = onGoogleSignIn)
+        }
+
         // Feed screen, which lists posts
         composable("feed") {
             FeedScreen(navController)
         }
-
-        // FeedDetail screen shows details of a selected post
-//        composable("feedDetail/{postId}") { backStackEntry ->
-//            val postId = backStackEntry.arguments?.getString("postId")
-//            FeedDetailScreen(navController, postId = postId)
-//        }
 
         // Albums screen, which lists all albums
         composable("albums") {

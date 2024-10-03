@@ -56,6 +56,7 @@ kapt {
 
 dependencies {
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.firebase.crashlytics.buildtools)
     val composeBom = platform("androidx.compose:compose-bom:2024.09.02")
 
     implementation(libs.androidx.core.ktx)
@@ -65,10 +66,23 @@ dependencies {
     implementation(libs.androidx.cardview)
     implementation(libs.circleimageview)
 
+    // Gif image loader
+    implementation(libs.coil.gif.v260)
+
+    // Mockk for mocking ViewModels and Repositories
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockk.common)
+
+    testImplementation(libs.turbine) // For StateFlow testing
+    testImplementation(libs.kotlinx.coroutines.test.v160)
+    // MockWebServer for API tests
+    testImplementation(libs.mockwebserver)
+
     // Firebase dependencies
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.play.services.auth)
 
     // Retrofit for network calls
     implementation(libs.retrofit)
