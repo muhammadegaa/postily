@@ -18,6 +18,7 @@ class AuthRepository @Inject constructor(
     private val _isUserSignedIn = MutableStateFlow(firebaseAuth.currentUser != null)
     val isUserSignedIn: StateFlow<Boolean> get() = _isUserSignedIn
 
+    // Sign in with Google
     suspend fun signInWithGoogle(idToken: String): Result<AuthResult> {
         return try {
             val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -29,15 +30,40 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    // Register a new user with email and password
+    suspend fun registerWithEmailAndPassword(email: String, password: String): Result<AuthResult> {
+        return try {
+            val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            _isUserSignedIn.value = true
+            Result.success(authResult)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // Sign in with email and password
+    suspend fun loginWithEmailAndPassword(email: String, password: String): Result<AuthResult> {
+        return try {
+            val authResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            _isUserSignedIn.value = true
+            Result.success(authResult)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // Sign out user
     fun signOut() {
         firebaseAuth.signOut()
         _isUserSignedIn.value = false
     }
 
+    // Get Google Sign-In intent
     fun getGoogleSignInIntent(context: Context): Intent {
         return googleSignInClient.signInIntent
     }
 
+    // Check if the user is signed in
     fun isUserSignedIn(): Boolean {
         return firebaseAuth.currentUser != null
     }

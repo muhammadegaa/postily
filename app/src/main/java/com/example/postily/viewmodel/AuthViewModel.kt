@@ -2,26 +2,11 @@ package com.example.postily.viewmodel
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.postily.R
-import com.example.postily.model.profile.User
 import com.example.postily.repository.AuthRepository
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,9 +20,11 @@ class AuthViewModel @Inject constructor(
 
     val isUserSignedIn = authRepository.isUserSignedIn
 
+    private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
+    val authState: StateFlow<AuthState> = _authState
+
     fun googleSignInIntent(context: Context): Intent {
         return authRepository.getGoogleSignInIntent(context)
-
     }
 
     fun handleGoogleSignInResult(
@@ -45,30 +32,73 @@ class AuthViewModel @Inject constructor(
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        Log.d("AuthViewModel", "Yes you are here")
         viewModelScope.launch {
-            Log.d("viewModelScope", "Hello")
+            _authState.value = AuthState.Loading
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
                 account?.idToken?.let { idToken ->
-                    Log.d("AuthViewModel", "Google ID Token received: $idToken")
                     authRepository.signInWithGoogle(idToken).fold(
                         onSuccess = {
-                            Log.d("AuthViewModel", "Google Sign-In Success")
+                            _authState.value = AuthState.Success
                             onSuccess()
                         },
                         onFailure = { e ->
-                            Log.e("AuthViewModel", "Google Sign-In Failed: ${e.message}")
+                            _authState.value = AuthState.Failure(e.message ?: "Unknown error")
                             onFailure(e as Exception)
                         }
                     )
                 }
             } catch (e: ApiException) {
-                Log.e("AuthViewModel", "Google Sign-In Failed with ApiException: ${e.statusCode}")
+                _authState.value = AuthState.Failure("Google Sign-In Failed: ${e.statusCode}")
                 onFailure(e)
             }
         }
+    }
+
+    fun registerWithEmailAndPassword(email: String, password: String, confirmPassword: String) {
+        if (password != confirmPassword) {
+            _authState.value = AuthState.Failure("Passwords do not match")
+            return
+        }
+
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            try {
+                authRepository.registerWithEmailAndPassword(email, password).fold(
+                    onSuccess = {
+                        _authState.value = AuthState.Success
+                    },
+                    onFailure = { e ->
+                        _authState.value = AuthState.Failure(e.message ?: "Registration failed")
+                    }
+                )
+            } catch (e: Exception) {
+                _authState.value = AuthState.Failure("Registration error: ${e.message}")
+            }
+        }
+    }
+
+    fun loginWithEmailAndPassword(email: String, password: String) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            try {
+                authRepository.loginWithEmailAndPassword(email, password).fold(
+                    onSuccess = {
+                        _authState.value = AuthState.Success
+                    },
+                    onFailure = { e ->
+                        _authState.value = AuthState.Failure(e.message ?: "Login failed")
+                    }
+                )
+            } catch (e: Exception) {
+                _authState.value = AuthState.Failure("Login error: ${e.message}")
+            }
+        }
+    }
+
+    fun logout() {
+        authRepository.signOut()
     }
 }
 

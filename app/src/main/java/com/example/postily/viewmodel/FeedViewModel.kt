@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
-    private val repository: FeedRepository
+    private val feedRepository: FeedRepository
 ) : ViewModel() {
 
     private val _posts = MutableStateFlow<List<Post>>(emptyList())
@@ -22,42 +22,28 @@ class FeedViewModel @Inject constructor(
     private val _comments = MutableStateFlow<List<Comment>>(emptyList())
     val comments: StateFlow<List<Comment>> = _comments
 
-    private val _isLoading = MutableStateFlow(true)
+    private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
     init {
         fetchPosts()
     }
 
-    private fun fetchPosts() {
+    // Fetch posts from Firestore
+    fun fetchPosts() {
         viewModelScope.launch {
             _isLoading.value = true
-            try {
-                val fetchedPosts = repository.getPosts()
-                _posts.value = fetchedPosts
-            } catch (e: Exception) {
-                _posts.value = emptyList()
-            } finally {
+            feedRepository.getPosts().let { result ->
+                _posts.value = result
                 _isLoading.value = false
             }
         }
     }
 
+    // Fetch comments for a specific post from Firestore
     fun fetchComments(postId: Int) {
         viewModelScope.launch {
-            _isLoading.value = true
-            try {
-                val fetchedComments = repository.getComments(postId)
-                _comments.value = fetchedComments
-            } catch (e: Exception) {
-                _comments.value = emptyList()
-            } finally {
-                _isLoading.value = false
-            }
+            _comments.value = feedRepository.getComments(postId)
         }
-    }
-
-    fun getPostById(postId: Int): Post? {
-        return _posts.value.find { it.id == postId }
     }
 }

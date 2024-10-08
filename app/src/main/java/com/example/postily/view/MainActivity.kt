@@ -25,17 +25,16 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    // Register result for Google Sign-In
     private val googleSignInLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data = result.data
                 val viewModel: AuthViewModel by viewModels()
 
-                // Handle the result in the ViewModel
                 viewModel.handleGoogleSignInResult(data,
-                    onSuccess = { Log.d("AuthSuccess","Google Sign-In Succeed") },
-                    onFailure = { Log.e("AuthFailure", "Google Sign-In Failed") })
+                    onSuccess = { /* Handle success */ },
+                    onFailure = { Log.e("Auth", "Google Sign-In Failed", it) }
+                )
             }
         }
 
@@ -44,12 +43,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             PostilyTheme {
                 MainScreen(onGoogleSignIn = { intent -> googleSignInLauncher.launch(intent) })
-                Log.d("onCreate", "Hey")
             }
         }
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,13 +54,9 @@ fun MainScreen(
     onGoogleSignIn: (Intent) -> Unit,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
-    // Create NavController
     val navController = rememberNavController()
+    val isUserSignedIn by viewModel.isUserSignedIn.collectAsState(initial = false)
 
-    // Observe the sign-in status
-    val isUserSignedIn by viewModel.isUserSignedIn.collectAsState()
-
-    // Show authentication screen if not signed in, else show the main content
     if (isUserSignedIn) {
         Scaffold(
             topBar = {
@@ -73,27 +66,9 @@ fun MainScreen(
                 BottomNavigationBar(navController = navController)
             }
         ) { innerPadding ->
-            NavigationGraph(
-                navController = navController,
-                paddingValues = innerPadding,
-                onGoogleSignIn = onGoogleSignIn
-            )
+            NavigationGraph(navController = navController, paddingValues = innerPadding, onGoogleSignIn = onGoogleSignIn)
         }
     } else {
-//        AuthScreen(onGoogleSignIn = onGoogleSignIn)
-        Scaffold(
-            topBar = {
-                TopAppBar(title = { Text("Postily") })
-            },
-            bottomBar = {
-                BottomNavigationBar(navController = navController)
-            }
-        ) { innerPadding ->
-            NavigationGraph(
-                navController = navController,
-                paddingValues = innerPadding,
-                onGoogleSignIn = onGoogleSignIn
-            )
-        }
+        AuthScreen(navController = navController, onGoogleSignIn = onGoogleSignIn)
     }
 }

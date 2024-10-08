@@ -33,7 +33,7 @@ fun NavigationGraph(
             SplashScreen(navController)
         }
         composable("auth") {
-            AuthScreen(onGoogleSignIn = onGoogleSignIn)
+            AuthScreen(navController = navController, onGoogleSignIn = onGoogleSignIn)
         }
 
         // Feed screen, which lists posts

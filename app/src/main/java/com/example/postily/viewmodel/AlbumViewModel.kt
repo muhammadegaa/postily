@@ -24,36 +24,37 @@ class AlbumViewModel @Inject constructor(
     val photos: StateFlow<List<Photo>> = _photos
 
     init {
-        fetchAlbums()  // Fetch albums when ViewModel is created
+        fetchAlbums()
     }
 
-    // Fetch all albums from the repository
+    // Fetch all albums from Firestore first, fallback to API if Firestore is empty
     private fun fetchAlbums() {
         viewModelScope.launch {
-            try {
-                val albumList = repository.getAlbums()
-                _albums.value = albumList
-            } catch (e: Exception) {
-                e.message?.let { Log.e("AlbumViewModel", it) }
+            val albumsFromFirestore = repository.getAlbumsFromFirestore()
+            if (albumsFromFirestore.isNotEmpty()) {
+                _albums.value = albumsFromFirestore
+            } else {
+                // If Firestore is empty, fetch from API and store to Firestore
+                val albumsFromApi = repository.getAlbums()
+                repository.saveAlbumsToFirestore(albumsFromApi)
+                _albums.value = albumsFromApi
             }
         }
     }
 
-    // Fetch photos for a specific album by ID
+    // Fetch photos for a specific album
     fun fetchPhotos(albumId: Int) {
         viewModelScope.launch {
-            try {
-                val photoList = repository.getPhotos(albumId)
-                _photos.value = photoList
-            } catch (e: Exception) {
-                // Handle any errors here (e.g., log the error)
+            val photosFromFirestore = repository.getPhotosFromFirestore(albumId)
+            if (photosFromFirestore.isNotEmpty()) {
+                _photos.value = photosFromFirestore
+            } else {
+                // If Firestore is empty, fetch from API and store to Firestore
+                val photosFromApi = repository.getPhotos(albumId)
+                repository.savePhotosToFirestore(albumId, photosFromApi)
+                _photos.value = photosFromApi
             }
         }
-    }
-
-    // Retrieve a specific album by its ID
-    fun getAlbumById(albumId: Int): Album? {
-        return _albums.value.find { it.id == albumId }
     }
 
     // Retrieve a specific photo by its ID

@@ -27,10 +27,17 @@ class TaskViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val fetchedTasks = repository.getTasks()
-                _tasks.value = fetchedTasks
+
+                // If no tasks exist in Firestore, fetch them from API and save to Firestore
+                if (fetchedTasks.isEmpty()) {
+                    val apiTasks = repository.fetchTasksFromApi()
+                    repository.saveTasksToFirestore(apiTasks)  // Save to Firestore
+                    _tasks.value = apiTasks
+                } else {
+                    _tasks.value = fetchedTasks  // Use tasks from Firestore
+                }
             } catch (e: Exception) {
-                // Handle any errors (e.g., show a message)
-                _tasks.value = emptyList()
+                _tasks.value = emptyList()  // Handle any errors
             }
         }
     }

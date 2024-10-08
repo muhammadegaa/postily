@@ -61,8 +61,6 @@ fun PhotoItem(photo: Photo, onClick: () -> Unit) {
                     .height(100.dp)
                     .fillMaxWidth()
             )
-//            Spacer(modifier = Modifier.height(8.dp))
-//            Text(text = photo.title, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

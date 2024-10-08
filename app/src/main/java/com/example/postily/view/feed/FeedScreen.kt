@@ -27,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -55,11 +56,11 @@ fun FeedScreen(navController: NavController, viewModel: FeedViewModel = hiltView
             if (isLoading) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = androidx.compose.ui.Alignment.Center
+                    contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
-            } else {
+            } else if (posts.isNotEmpty()) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -75,22 +76,30 @@ fun FeedScreen(navController: NavController, viewModel: FeedViewModel = hiltView
                         }
                     }
                 }
+            } else {
+                // Show message if no posts are retrieved
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("No posts available.")
+                }
+            }
 
-                // ModalBottomSheet to display post details
-                if (selectedPost != null) {
-                    ModalBottomSheet(
-                        onDismissRequest = {
-                            coroutineScope.launch {
-                                sheetState.hide()
-                                selectedPost = null // Clear selected post on dismiss
-                            }
-                        },
-                        sheetState = sheetState
-                    ) {
-                        FeedDetailBottomSheet(selectedPost!!, comments, onDismiss = {
-                            coroutineScope.launch { sheetState.hide() }
-                        })
-                    }
+            // ModalBottomSheet to display post details
+            if (selectedPost != null) {
+                ModalBottomSheet(
+                    onDismissRequest = {
+                        coroutineScope.launch {
+                            sheetState.hide()
+                            selectedPost = null // Clear selected post on dismiss
+                        }
+                    },
+                    sheetState = sheetState
+                ) {
+                    FeedDetailBottomSheet(selectedPost!!, comments, onDismiss = {
+                        coroutineScope.launch { sheetState.hide() }
+                    })
                 }
             }
         }
