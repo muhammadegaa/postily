@@ -68,7 +68,7 @@ fun AlbumListItem(album: Album, onClick: () -> Unit) {
             .height(height)
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .clip(shape = RoundedCornerShape(30.dp))
+            .clip(shape = RoundedCornerShape(40.dp))
             .padding(6.dp),
         contentAlignment = Alignment.BottomCenter
     ) {

@@ -111,7 +111,8 @@ fun FeedScreen(navController: NavController, viewModel: FeedViewModel = hiltView
                             selectedPost = null // Clear selected post on dismiss
                         }
                     },
-                    sheetState = sheetState
+                    sheetState = sheetState,
+//                    containerColor = Color.White
                 ) {
                     FeedDetailBottomSheet(selectedPost!!, comments, onDismiss = {
                         coroutineScope.launch { sheetState.hide() }
@@ -154,9 +155,8 @@ fun FeedListItem(item: Post, onClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        bottom = 16.dp
+                        start = 30.dp,
+                        end = 30.dp
                     ),
                 fontWeight = FontWeight.Bold
             )
@@ -168,9 +168,9 @@ fun FeedListItem(item: Post, onClick: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = 16.dp,
-                        end = 16.dp,
-                        bottom = 20.dp
+                        start = 30.dp,
+                        end = 30.dp,
+                        bottom = 30.dp
                     ),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
@@ -185,12 +185,18 @@ fun FeedDetailBottomSheet(
     comments: List<Comment>,
     onDismiss: () -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
         // Post Title
         Text(
             text = post.title,
-            style = androidx.compose.material3.MaterialTheme.typography.headlineLarge,
-            modifier = Modifier.padding(16.dp)
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(30.dp)
         )
 
         // Post Image
@@ -199,22 +205,27 @@ fun FeedDetailBottomSheet(
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
-                .padding(horizontal = 16.dp)
+                .height(300.dp)
         )
 
         // Post Body
         Text(
             text = post.body,
-            style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier
-                .padding(16.dp)
+                .padding(
+                    start = 20.dp,
+                    end = 20.dp,
+                    bottom = 16.dp,
+                    top = 16.dp
+                ),
+            color = Color.Gray
         )
 
         // Comments Section Title
         Text(
             text = "Comments:",
-            style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(16.dp)
         )
 
@@ -247,16 +258,18 @@ fun CommentItem(comment: Comment) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = comment.email, // Email at the top
-                style = androidx.compose.material3.MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
             )
             Text(
                 text = comment.name, // Comment title
-                style = androidx.compose.material3.MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(vertical = 4.dp)
             )
             Text(
                 text = comment.body, // Comment body text
-                style = androidx.compose.material3.MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }
