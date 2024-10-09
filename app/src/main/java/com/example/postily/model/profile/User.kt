@@ -1,7 +1,5 @@
 package com.example.postily.model.profile
 
-import android.location.Address
-
 data class User(
     val id: Int,
     val name: String,
