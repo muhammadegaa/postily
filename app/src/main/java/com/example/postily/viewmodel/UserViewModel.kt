@@ -1,5 +1,6 @@
 package com.example.postily.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postily.model.profile.User
@@ -25,21 +26,19 @@ class UserViewModel @Inject constructor(
     val friends: StateFlow<List<User>> = _friends
 
     init {
-        fetchUser()
+        fetchUser(1)  // Assuming user ID 1 for this example
         fetchFriends()
     }
 
-    private fun fetchUser() {
+    private fun fetchUser(userId: Int) {
         viewModelScope.launch {
-            val fetchedUser = userRepository.getUser()
-            _user.value = fetchedUser
+            _user.value = userRepository.getUser(userId)
         }
     }
 
     private fun fetchFriends() {
         viewModelScope.launch {
-            val fetchedFriends = userRepository.getFriends()
-            _friends.value = fetchedFriends
+            _friends.value = userRepository.getFriends()
         }
     }
 

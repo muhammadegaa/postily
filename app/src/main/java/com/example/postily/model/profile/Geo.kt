@@ -1,6 +1,8 @@
 package com.example.postily.model.profile
 
+import com.google.gson.annotations.SerializedName
+
 data class Geo(
-    val lat: String,
-    val lng: String
+    @SerializedName("lat") val lat: String,
+    @SerializedName("lng") val lng: String
 )
