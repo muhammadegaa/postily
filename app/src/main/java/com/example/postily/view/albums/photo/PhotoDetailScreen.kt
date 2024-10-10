@@ -1,6 +1,7 @@
 package com.example.postily.view.albums.photo
 
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,33 +26,37 @@ import com.example.postily.viewmodel.AlbumViewModel
 @Composable
 fun PhotoDetailScreen(
     navController: NavController,
-    photoId: String?,
-    viewModel: AlbumViewModel = hiltViewModel()
+    photoUrl: String?,
+    photoTitle: String?
 ) {
     val context = LocalContext.current
-    val photo = viewModel.getPhotoById(photoId?.toInt() ?: 0)
+
+    // Decode the photoUrl to get the actual URL
+    val decodedUrl = Uri.decode(photoUrl)
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Text(text = photo?.title ?: "No Title", style = MaterialTheme.typography.headlineSmall)
+        Text(text = photoTitle ?: "No Title", style = MaterialTheme.typography.headlineSmall)
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Display the full-size image
         AsyncImage(
-            model = photo?.url,
+            model = decodedUrl,  // Use the decoded URL
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp)
+                .height(400.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Share Button
         Button(onClick = {
             // Share the photo
             val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"  // For sharing text or image
-                putExtra(Intent.EXTRA_TEXT, photo?.url ?: "")
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, decodedUrl ?: "")
             }
             val shareIntent = Intent.createChooser(intent, null)
             context.startActivity(shareIntent)

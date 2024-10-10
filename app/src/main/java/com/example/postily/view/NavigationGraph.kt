@@ -6,8 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.postily.view.feed.FeedScreen
 import com.example.postily.view.albums.AlbumsScreen
 import com.example.postily.view.albums.AlbumDetailScreen
@@ -53,9 +55,16 @@ fun NavigationGraph(
         }
 
         // PhotoDetail screen shows a detailed view of a selected photo
-        composable("photoDetail/{photoId}") { backStackEntry ->
-            val photoId = backStackEntry.arguments?.getString("photoId")
-            PhotoDetailScreen(navController = navController, photoId = photoId)
+        composable(
+            "photoDetail/{photoUrl}/{photoTitle}",
+            arguments = listOf(
+                navArgument("photoUrl") { type = NavType.StringType },
+                navArgument("photoTitle") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val photoUrl = backStackEntry.arguments?.getString("photoUrl")
+            val photoTitle = backStackEntry.arguments?.getString("photoTitle")
+            PhotoDetailScreen(navController = navController, photoUrl = photoUrl, photoTitle = photoTitle)
         }
 
         // Tasks screen, which lists ongoing and completed tasks

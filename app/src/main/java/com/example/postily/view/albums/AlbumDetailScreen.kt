@@ -1,5 +1,6 @@
 package com.example.postily.view.albums
 
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -37,12 +39,16 @@ fun AlbumDetailScreen(navController: NavController, albumId: String?, viewModel:
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         contentPadding = PaddingValues(8.dp)
     ) {
         items(photos) { photo ->
             PhotoItem(photo) {
-                navController.navigate("photoDetail/${photo.id}")
+                // Encode the URL to safely pass it in the navigation route
+                val encodedUrl = Uri.encode(photo.url)
+                navController.navigate("photoDetail/$encodedUrl/${photo.title}")
             }
         }
     }
@@ -55,16 +61,15 @@ fun PhotoItem(photo: Photo, onClick: () -> Unit) {
             .fillMaxWidth()
             .padding(8.dp)
             .clickable(onClick = onClick)
-            .clip(shape = RoundedCornerShape(30.dp))
+            .clip(RoundedCornerShape(8.dp))  // Reduced corner radius for better appearance
     ) {
-        Column{
-            AsyncImage(
-                model = photo.thumbnailUrl,  // Using thumbnailUrl from API
-                contentDescription = null,
-                modifier = Modifier
-                    .height(150.dp)
-                    .width(150.dp)
-            )
-        }
+        // Ensure the image fills the entire parent container
+        AsyncImage(
+            model = photo.thumbnailUrl,  // Using thumbnailUrl from API
+            contentDescription = null,
+            contentScale = ContentScale.Crop,  // Ensure the image fills the box
+            modifier = Modifier
+                .fillMaxSize()  // Fill the card size
+        )
     }
 }
