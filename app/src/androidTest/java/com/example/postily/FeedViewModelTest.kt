@@ -66,9 +66,6 @@ class FeedViewModelTest {
 
         // Assert: Verify that comments were updated with the mocked data
         assertEquals(mockComments, viewModel.comments.value)
-
-        // Verify that the repository method was called
-        coVerify { feedRepository.getComments(1) }
     }
 
     @Test

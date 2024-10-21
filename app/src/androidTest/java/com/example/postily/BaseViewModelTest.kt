@@ -23,4 +23,3 @@ open class BaseViewModelTest {
         testDispatcherRule.cleanupTestCoroutines()
     }
 }
-
