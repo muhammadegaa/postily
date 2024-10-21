@@ -1,10 +1,7 @@
 package com.example.postily.view
 
 import android.content.Intent
-import android.graphics.fonts.FontFamily
-import android.os.Build.VERSION.SDK_INT
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,17 +33,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.Insets.add
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.ImageLoader
 import coil.compose.AsyncImage
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
-import com.example.postily.viewmodel.AuthViewModel
 import com.example.postily.R
 import com.example.postily.viewmodel.AuthState
+import com.example.postily.viewmodel.AuthViewModel
 
 @Composable
 fun AuthScreen(

@@ -28,7 +28,7 @@ class AlbumViewModel @Inject constructor(
     }
 
     // Fetch all albums from Firestore first, fallback to API if Firestore is empty
-    private fun fetchAlbums() {
+    fun fetchAlbums() {
         viewModelScope.launch {
             val albumsFromFirestore = repository.getAlbumsFromFirestore()
             if (albumsFromFirestore.isNotEmpty()) {
@@ -45,17 +45,23 @@ class AlbumViewModel @Inject constructor(
     // Fetch photos for a specific album
     fun fetchPhotos(albumId: Int) {
         viewModelScope.launch {
-            val photosFromFirestore = repository.getPhotosFromFirestore(albumId)
-            if (photosFromFirestore.isNotEmpty()) {
-                _photos.value = photosFromFirestore
-            } else {
-                // If Firestore is empty, fetch from API and store to Firestore
-                val photosFromApi = repository.getPhotos(albumId)
-                repository.savePhotosToFirestore(albumId, photosFromApi)
-                _photos.value = photosFromApi
+            try {
+                val photosFromFirestore = repository.getPhotosFromFirestore(albumId)
+                if (photosFromFirestore.isNotEmpty()) {
+                    _photos.value = photosFromFirestore
+                } else {
+                    // If Firestore is empty, fetch from API and store to Firestore
+                    val photosFromApi = repository.getPhotos(albumId)
+                    repository.savePhotosToFirestore(albumId, photosFromApi)
+                    _photos.value = photosFromApi
+                }
+            } catch (e: Exception) {
+                // Handle exception by clearing the photos or any other fallback
+                _photos.value = emptyList()
             }
         }
     }
+
 
     // Retrieve a specific photo by its ID
     fun getPhotoById(photoId: Int): Photo? {

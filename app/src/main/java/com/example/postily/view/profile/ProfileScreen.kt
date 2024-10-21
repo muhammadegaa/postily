@@ -2,6 +2,7 @@ package com.example.postily.view.profile
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,8 @@ import com.example.postily.model.profile.User
 import com.example.postily.view.profile.friend.FriendItem
 import com.example.postily.viewmodel.AuthViewModel
 import com.example.postily.viewmodel.UserViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 
 @Composable
 fun ProfileScreen(
@@ -49,6 +52,7 @@ fun ProfileScreen(
     val user by userViewModel.user.collectAsState()
     val friends by userViewModel.friends.collectAsState()
     val context = LocalContext.current
+    val firebaseUser = FirebaseAuth.getInstance().currentUser
 
     Column(modifier = Modifier.padding(16.dp)) {
         user?.let {
@@ -71,7 +75,7 @@ fun ProfileScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = it.name,
+                    text = firebaseUser?.displayName ?: "Unknown User",
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.weight(1f)
                 )

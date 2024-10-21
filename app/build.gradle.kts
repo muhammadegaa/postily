@@ -55,115 +55,86 @@ kapt {
 }
 
 dependencies {
+    // Jetpack Compose and Material3
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.firebase.crashlytics.buildtools)
-    val composeBom = platform("androidx.compose:compose-bom:2024.09.02")
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material)
+    implementation(libs.play.services.auth.v2060)
+    implementation(libs.android.gif.drawable)
+    implementation(libs.material.icons.core)
+    implementation(libs.material.icons.extended)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.recyclerview)
-    implementation(libs.androidx.cardview)
-    implementation(libs.circleimageview)
+    testImplementation(libs.turbine.v0121)
 
-    // Gif image loader
-    implementation(libs.coil.gif.v260)
+    // Compose UI and UI Testing dependencies
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.tooling.v150)
+    androidTestImplementation(libs.ui.test.junit4)
 
-    // Mockk for mocking ViewModels and Repositories
-    testImplementation(libs.mockk)
-    testImplementation(libs.mockk.common)
+    // For InstantTaskExecutorRule
+    testImplementation(libs.androidx.core.testing)
 
-    testImplementation(libs.turbine) // For StateFlow testing
-    testImplementation(libs.kotlinx.coroutines.test.v160)
-    // MockWebServer for API tests
-    testImplementation(libs.mockwebserver)
+    // Coroutine test library
+    testImplementation(libs.kotlinx.coroutines.test.v173)
 
-    // Firebase dependencies
+    // Firebase Dependencies
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
-    implementation(libs.play.services.auth)
 
-    // Retrofit for network calls
+    // Retrofit for networking
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
-    // Kotlin DSL
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android.v164)
-
-    // Hilt for Dependency Injection
+    // Dependency Injection: Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-    // Coroutines for async tasks
-    implementation(libs.kotlinx.coroutines.android)
+    // Kotlin Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android.v164)
 
-    // Jetpack Compose
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
-    implementation(libs.androidx.navigation.compose.v260)
-    implementation(libs.androidx.material3)
+    // Image loading libraries
+    implementation(libs.coil.compose)
+    implementation(libs.glide)
 
-    // Android Studio Preview support
-//    implementation(libs.androidx.ui.tooling.preview)
-//    debugImplementation(libs.androidx.ui.tooling)
+    // Lifecycle and ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 
-    // Compose Preview
-    debugImplementation(libs.ui.tooling)
-    implementation(libs.ui.tooling)
-
-    // UI Tests
+    // UI Testing
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Optional - Included automatically by material, only add when you need
-    // the icons but not the material library (e.g. when using Material3 or a
-    // custom design system based on Foundation)
-    implementation(libs.androidx.material.icons.core)
-    // Optional - Add full set of material icons
-    implementation(libs.androidx.material.icons.extended)
-    // Optional - Add window size utils
-    implementation(libs.androidx.adaptive)
+    // UI Tools and Previews
+    debugImplementation(libs.ui.tooling)
+    implementation(libs.ui.tooling)
 
-    // Optional - Integration with activities
-    implementation(libs.androidx.activity.compose)
-    // Optional - Integration with ViewModels
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    // Optional - Integration with LiveData
-    implementation(libs.androidx.runtime.livedata)
-    // Optional - Integration with RxJava
-    implementation(libs.androidx.runtime.rxjava2)
+    // MockK for unit testing
+    testImplementation(libs.mockk.v1120) // Mockk core for mocking ViewModels/Repositories
+    androidTestImplementation(libs.mockk.android) // Mockk Android for instrumentation tests
 
-    // Navigation components
-    implementation(libs.material.v190)
+    // Other Unit Testing Libraries
+    testImplementation(libs.junit.jupiter) // JUnit for unit testing
+    testImplementation(libs.turbine.v090) // StateFlow testing
+    testImplementation(libs.mockwebserver.v491) // MockWebServer for API simulation
+
+    // Firebase testing utilities
+    testImplementation(libs.firebase.auth.ktx) // Firebase Authentication testing
+    testImplementation(libs.firebase.firestore.ktx) // Firebase Firestore testing
+
+    // AndroidX Test Libraries (for Espresso and Android Testing)
+    androidTestImplementation(libs.androidx.espresso.core.v340) // Espresso for UI tests
+    androidTestImplementation(libs.androidx.runner.v140) // Android test runner
+    androidTestImplementation(libs.androidx.rules.v140) // Android test rules
+
+    // AndroidX Test Ext JUnit
+    androidTestImplementation(libs.androidx.junit.v113) // AndroidX JUnit extension for instrumentation tests
+
+    // Optional UI Components
     implementation(libs.androidx.core.splashscreen)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.androidx.navigation.fragment.ktx.v275)
-    implementation(libs.androidx.navigation.ui.ktx.v275)
-    implementation(libs.glide)
-    annotationProcessor(libs.compiler)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-
-    // Coil Image Loading Library for Jetpack Compose
-    implementation(libs.coil.compose)
-
-    // Image loading with Glide
-    implementation(libs.glide)
-
-    // Lifecycle components
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-
-    // UI and splash screen
     implementation(libs.material.v190)
-    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.circleimageview)
 }
-
-   

@@ -26,17 +26,17 @@ class UserViewModel @Inject constructor(
     val friends: StateFlow<List<User>> = _friends
 
     init {
-        fetchUser(1)  // Assuming user ID 1 for this example
+        fetchUser(1)
         fetchFriends()
     }
 
-    private fun fetchUser(userId: Int) {
+    internal fun fetchUser(userId: Int) {
         viewModelScope.launch {
             _user.value = userRepository.getUser(userId)
         }
     }
 
-    private fun fetchFriends() {
+    internal fun fetchFriends() {
         viewModelScope.launch {
             _friends.value = userRepository.getFriends()
         }

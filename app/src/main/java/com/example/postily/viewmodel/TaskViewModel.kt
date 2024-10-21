@@ -23,7 +23,7 @@ class TaskViewModel @Inject constructor(
         fetchTasks()
     }
 
-    private fun fetchTasks() {
+    internal fun fetchTasks() {
         viewModelScope.launch {
             try {
                 val fetchedTasks = repository.getTasks()

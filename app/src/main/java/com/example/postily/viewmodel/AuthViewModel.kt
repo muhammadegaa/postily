@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.postily.repository.AuthRepository
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,13 +17,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val firebaseAuth: FirebaseAuth
 ) : ViewModel() {
 
     val isUserSignedIn = authRepository.isUserSignedIn
 
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState: StateFlow<AuthState> = _authState
+
+    private val _currentUser = MutableStateFlow<FirebaseUser?>(firebaseAuth.currentUser)
+    val currentUser: StateFlow<FirebaseUser?> = _currentUser
+
+    init {
+        firebaseAuth.addAuthStateListener { auth ->
+            _currentUser.value = auth.currentUser
+        }
+    }
 
     fun googleSignInIntent(context: Context): Intent {
         return authRepository.getGoogleSignInIntent(context)
