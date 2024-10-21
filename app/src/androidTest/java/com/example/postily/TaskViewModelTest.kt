@@ -20,11 +20,11 @@ class TaskViewModelTest : BaseViewModelTest() {
     @MockK
     lateinit var taskRepository: TaskRepository
 
-    lateinit var viewModel: TaskViewModel
+    private lateinit var viewModel: TaskViewModel
 
     @Before
-    fun setUp() {
-        MockKAnnotations.init(this, relaxed = true)
+    override fun setUp() {
+        super.setUp()
         viewModel = TaskViewModel(taskRepository)
     }
 

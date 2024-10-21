@@ -9,12 +9,11 @@ import org.junit.Rule
 @ExperimentalCoroutinesApi
 open class BaseViewModelTest {
 
-    // Use TestCoroutineDispatcher to ensure coroutines are properly controlled in tests
     @get:Rule
-    val testDispatcherRule = MainDispatcherRule()
+    val testDispatcherRule = TestDispatcherRule()
 
     @Before
-    fun setUpBase() {   // Base setup method, not open or overridden
+    open fun setUp() {
         MockKAnnotations.init(this, relaxed = true)
     }
 
