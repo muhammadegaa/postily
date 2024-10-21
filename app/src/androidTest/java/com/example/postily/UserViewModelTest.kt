@@ -24,8 +24,8 @@ class UserViewModelTest : BaseViewModelTest() {
     lateinit var viewModel: UserViewModel
 
     @Before
-    fun setUp() {
-        MockKAnnotations.init(this, relaxed = true)
+    override fun setUp() {
+        super.setUp()
         viewModel = UserViewModel(userRepository)
     }
 
