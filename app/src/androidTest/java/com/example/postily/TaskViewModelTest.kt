@@ -3,13 +3,13 @@ package com.example.postily
 import com.example.postily.model.tasks.Task
 import com.example.postily.repository.TaskRepository
 import com.example.postily.viewmodel.TaskViewModel
-import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
