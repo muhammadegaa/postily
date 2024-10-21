@@ -36,17 +36,15 @@ class FeedViewModel @Inject constructor(
     // Function to fetch posts
     fun fetchPosts() {
         viewModelScope.launch {
-            _isLoading.value = true
             try {
-                // Fetch posts from the repository
-                val result = feedRepository.getPosts()
-                // Update the posts state with the fetched data
-                _posts.value = result
+                _isLoading.value = true
+                val posts = feedRepository.getPosts()
+                _posts.value = posts
             } catch (e: Exception) {
-                // If an error occurs, set posts to an empty list
+                // Handle error
                 _posts.value = emptyList()
             } finally {
-                _isLoading.value = false // Mark loading as done
+                _isLoading.value = false
             }
         }
     }
@@ -54,17 +52,15 @@ class FeedViewModel @Inject constructor(
     // Function to fetch comments for a specific post
     fun fetchComments(postId: Int) {
         viewModelScope.launch {
-            _isLoading.value = true
             try {
-                // Fetch comments from the repository
-                val result = feedRepository.getComments(postId)
-                // Update the comments state with the fetched data
-                _comments.value = result
+                _isLoading.value = true
+                val comments = feedRepository.getComments(postId)
+                _comments.value = comments
             } catch (e: Exception) {
-                // If an error occurs, set comments to an empty list
+                // Handle error
                 _comments.value = emptyList()
             } finally {
-                _isLoading.value = false // Mark loading as done
+                _isLoading.value = false
             }
         }
     }
