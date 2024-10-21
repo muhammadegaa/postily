@@ -18,16 +18,16 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class FeedViewModelTest {
+class FeedViewModelTest : BaseViewModelTest() {
 
     @MockK
     lateinit var feedRepository: FeedRepository
 
-    lateinit var viewModel: FeedViewModel
+    private lateinit var viewModel: FeedViewModel
 
     @Before
-    fun setUp() {
-        MockKAnnotations.init(this, relaxed = true)
+    override fun setUp() {
+        super.setUp()
         viewModel = FeedViewModel(feedRepository)
     }
 
