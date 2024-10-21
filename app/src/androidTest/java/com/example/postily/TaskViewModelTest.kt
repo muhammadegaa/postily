@@ -15,7 +15,7 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class TaskViewModelTest {
+class TaskViewModelTest : BaseViewModelTest() {
 
     @MockK
     lateinit var taskRepository: TaskRepository
@@ -32,23 +32,25 @@ class TaskViewModelTest {
     fun fetchTasks_updatesTasksWithDataFromRepository() = runTest {
         val mockTasks = listOf(Task(1, 1, "Task Title", false))
         coEvery { taskRepository.getTasks() } returns mockTasks
+        coEvery { taskRepository.fetchTasksFromApi() } returns emptyList()
 
         viewModel.fetchTasks()
 
-        // Assert that the tasks are updated with the mocked data
-        assertEquals(mockTasks, viewModel.tasks.value)
+        advanceUntilIdle()
 
-        // Verify that the repository method was called
+        assertEquals(mockTasks, viewModel.tasks.value)
         coVerify { taskRepository.getTasks() }
     }
 
     @Test
     fun fetchTasks_handlesErrorCorrectly() = runTest {
         coEvery { taskRepository.getTasks() } throws Exception("API Error")
+        coEvery { taskRepository.fetchTasksFromApi() } throws Exception("API Error")
 
         viewModel.fetchTasks()
 
-        // Assert that tasks are empty when an error occurs
+        advanceUntilIdle()
+
         assertTrue(viewModel.tasks.value.isEmpty())
     }
 
@@ -59,10 +61,12 @@ class TaskViewModelTest {
             Task(2, 2, "Task 2", true)
         )
         coEvery { taskRepository.getTasks() } returns mockTasks
+        coEvery { taskRepository.fetchTasksFromApi() } returns emptyList()
 
         viewModel.fetchTasks()
 
-        // Assert that completed and to-do tasks are filtered correctly
+        advanceUntilIdle()
+
         assertEquals(1, viewModel.tasks.value.count { it.completed })
         assertEquals(1, viewModel.tasks.value.count { !it.completed })
     }
